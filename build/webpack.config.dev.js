@@ -3,7 +3,7 @@ const _ = require('lodash');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const config = require('../config/config');
-const webpackBaseConfig = require('./webpack.base.config');
+const webpackBaseConfig = require('./webpack.config.base');
 const chalk = require('chalk');
 
 const generateDll = require(path.resolve(__dirname, '../config/generateDll.js'));

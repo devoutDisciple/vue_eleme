@@ -5,7 +5,7 @@ const os = require('os');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanCSSPlugin = require('less-plugin-clean-css');
 const HappyPack = require('happypack');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const VueLoaderPlugin = require('vue-loader');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const COMMON_0_CSS = new ExtractTextPlugin('common.0.css', {allChunks: true});
@@ -44,7 +44,7 @@ module.exports = (env = 'development') => {
 			},
 			{test: /\.vue$/, use: [{
 				loader: 'vue-loader'
-			}]}, 
+			}]},
 			{
 				test: /\.css$/,
 				include: path.join(__dirname, 'node_modules'),
@@ -116,7 +116,7 @@ module.exports = (env = 'development') => {
 			extensions: ['.js', '.vue', '.less', '.json'],
 			alias: {
 				$config: path.resolve(__dirname, '../config/config'),
-           
+
 			}
 		},
 		plugins: [

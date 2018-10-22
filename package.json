@@ -4,6 +4,9 @@
   "description": "this is a web app like eleme",
   "main": "main.js",
   "scripts": {
+    "dll": "webpack --config config/dll.config.js --mode development",
+    "dev": "webpack-dev-server --config build/webpack.config.dev.js --mode development --progress --host --inline",
+    "build": "webpack --config build/webpack.config.prod.js --mode production --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
