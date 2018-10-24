@@ -6,7 +6,6 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 var CompressionWebpackPlugin = require('compression-webpack-plugin');
 
-
 module.exports = merge(webpackBaseConfig('production'), {
 	optimization: {
 		splitChunks: {

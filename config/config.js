@@ -1,7 +1,8 @@
 module.exports = {
 	dev: {
 		port: '8081',
-		publicPath: '/'
+		publicPath: '/',
+		openBrowser: false
 	},
 	prod: {
 		publicPath: 'http://www.baidu.com'

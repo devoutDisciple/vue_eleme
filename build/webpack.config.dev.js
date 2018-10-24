@@ -32,7 +32,7 @@ let devConfig = {
 	devServer: {
 		contentBase: path.resolve(__dirname, '../dist'),
 		port: config.dev.port,
-		open: true,
+		open: config.dev.openBrowser,
 		historyApiFallback: true,
 		proxy: {
 			'/v1': {

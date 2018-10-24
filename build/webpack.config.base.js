@@ -136,6 +136,7 @@ module.exports = (env = 'development') => {
 			},
 			{
 				test: /\.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+				exclude: getRealPath('../assets'),
 				use: [
 					{
 						loader: 'url-loader',
@@ -143,7 +144,7 @@ module.exports = (env = 'development') => {
 							limit: '1024',
 							name: '[path][name].[ext]',
 							outputPath: 'img/',
-							publicPath: '/'
+							publicPath: 'img'
 						}
 					},
 				]
