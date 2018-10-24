@@ -16,9 +16,6 @@ const COMMON_1_LESS = new ExtractTextPlugin('app.1.css', {allChunks: true});
 
 
 //获取npm后面的命令
-const commandTarget = process.env.npm_lifecycle_event;// npm run start:build 获取的是start:build
-
-console.log(chalk.yellow(`logging: the project is running of command is ${commandTarget}`));
 
 const happyThreadPoolLength = os.cpus().length;
 
@@ -157,6 +154,7 @@ module.exports = (env = 'development') => {
 			extensions: ['.js', '.vue', '.less', '.json'],
 			alias: {
 				$config: getRealPath('../config/config'),
+				'vue$': 'vue/dist/vue.esm.js'
 			}
 		},
 		plugins: [
@@ -171,7 +169,7 @@ module.exports = (env = 'development') => {
 				threads: happyThreadPoolLength
 			}),
 			new HtmlWebpackPlugin({
-				title: '数据中心',
+				title: 'vue demo',
 				template: 'index.html',
 				filename: 'index.html',
 				hash: true,
