@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img alt="Vue logo" src="../assets/1.jpg">
+    <img alt="Vue logo" src="./assets/1.jpg">
     <!-- 直接绑定 -->
     <div>{{message}}</div>
     <!-- 用声明式渲染 v-bind -->
