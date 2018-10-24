@@ -5,36 +5,48 @@ const os = require('os');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanCSSPlugin = require('less-plugin-clean-css');
 const HappyPack = require('happypack');
-const VueLoaderPlugin = require('vue-loader');
+const chalk = require('chalk');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const COMMON_0_CSS = new ExtractTextPlugin('common.0.css', {allChunks: true});
 const COMMON_1_CSS = new ExtractTextPlugin('common.1.css', {allChunks: true});
 const COMMON_0_LESS = new ExtractTextPlugin('app.0.css', {allChunks: true});
+const COMMON_1_LESS = new ExtractTextPlugin('app.1.css', {allChunks: true});
+
 
 //获取npm后面的命令
-// const commandTarget = process.env.npm_lifecycle_event;// npm run start:build 获取的是start:build
+const commandTarget = process.env.npm_lifecycle_event;// npm run start:build 获取的是start:build
+
+console.log(chalk.yellow(`logging: the project is running of command is ${commandTarget}`));
 
 const happyThreadPoolLength = os.cpus().length;
+
+const getRealPath = (temPath) => {
+	return path.resolve(__dirname, temPath);
+};
+
+const node_modules = getRealPath('../node_modules');
 
 module.exports = (env = 'development') => {
 	// env = 'production' || 'development'
 	env = env === 'development';
+	console.log(chalk.yellow(`logging: env = ${env}`));
 	let options = {
 		minimize: !env,
 		sourceMap: env,
 	};
 	let configuration = {
-		entry: path.resolve(__dirname, '../src/main.js'),
+		entry: ['babel-polyfill', getRealPath('../src/main.js')],
 		output: {
-			path: path.join(__dirname, '../dist'),
-			filename: '[name].[hash].js',
+			path: getRealPath('../dist'),
+			filename: 'bundle.js',
 			publicPath: env ? config.dev.publicPath : config.prod.publicPath,
 		},
 		module: {
 			rules: [{
 				test: /\.js$/,
-				exclude: /node_modules/,
+				exclude: node_modules,
 				use: [{
 					loader: 'babel-loader',
 					options: {
@@ -42,12 +54,14 @@ module.exports = (env = 'development') => {
 					}
 				}],
 			},
-			{test: /\.vue$/, use: [{
-				loader: 'vue-loader'
-			}]},
+			{
+				test: /\.vue$/, use: [{
+					loader: 'vue-loader'
+				}]
+			},
 			{
 				test: /\.css$/,
-				include: path.join(__dirname, 'node_modules'),
+				include: node_modules,
 				use: COMMON_0_CSS.extract({
 					fallback: 'style-loader',
 					use: [
@@ -60,7 +74,7 @@ module.exports = (env = 'development') => {
 			},
 			{
 				test: /\.css$/,
-				exclude: path.join(__dirname, 'node_modules'),
+				exclude: node_modules,
 				use: COMMON_1_CSS.extract({
 					fallback: 'style-loader',
 					use: [
@@ -68,17 +82,47 @@ module.exports = (env = 'development') => {
 							loader: 'css-loader',
 							options: options
 						},
+						{
+							loader: 'postcss-loader'
+						}
 					]
 				})
 			},
 			{
 				test: /\.less$/,
+				include: node_modules,
 				use: COMMON_0_LESS.extract({
 					fallback: 'style-loader',
 					use: [
 						{
 							loader: 'css-loader',
 							options: options
+						},
+						{
+							loader: 'less-loader',
+							options: {
+								javascriptEnabled: true,
+								sourceMap: options.sourceMap,
+								plugins: [
+									new CleanCSSPlugin({ advanced: true }),// 用于压缩css
+								]
+							},
+						}
+					]
+				})
+			},
+			{
+				test: /\.less$/,
+				exclude: node_modules,
+				use: COMMON_1_LESS.extract({
+					fallback: 'style-loader',
+					use: [
+						{
+							loader: 'css-loader',
+							options: options
+						},
+						{
+							loader: 'postcss-loader'
 						},
 						{
 							loader: 'less-loader',
@@ -109,20 +153,17 @@ module.exports = (env = 'development') => {
 			}
 			],
 		},
-		node: {
-			fs: 'empty'
-		},
 		resolve: {
 			extensions: ['.js', '.vue', '.less', '.json'],
 			alias: {
-				$config: path.resolve(__dirname, '../config/config'),
-
+				$config: getRealPath('../config/config'),
 			}
 		},
 		plugins: [
 			COMMON_0_CSS,
 			COMMON_1_CSS,
 			COMMON_0_LESS,
+			COMMON_1_LESS,
 			new VueLoaderPlugin(),// 这个插件是解析vue必须的
 			new HappyPack({
 				//如何处理 用法和loader 的配置一样
@@ -131,7 +172,8 @@ module.exports = (env = 'development') => {
 			}),
 			new HtmlWebpackPlugin({
 				title: '数据中心',
-				template: path.resolve(__dirname, '../index.html'),
+				template: 'index.html',
+				filename: 'index.html',
 				hash: true,
 				minify: true
 			}),

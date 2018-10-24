@@ -1,24 +1,11 @@
 const path = require('path');
-const _ = require('lodash');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const webpackBaseConfig = require('./webpack.config.prod');
+const webpackBaseConfig = require('./webpack.base.config');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const chalk = require('chalk');
 var CompressionWebpackPlugin = require('compression-webpack-plugin');
 
-//获取npm后面的命令
-const commandTarget = process.env.npm_lifecycle_event; // npm run start:build 获取的是start:build
-
-let API_SERVER = 'http://localhost:3306';
-if(_.includes(commandTarget, 'dev')) API_SERVER = 'http://www.baidu.com';
-else API_SERVER = 'http://www.alibaba-inc.com';
-
-
-console.log(chalk.yellow(`server is running at ${API_SERVER}`));
-
-console.log(chalk.yellow('webpack log: enviorment is development'));
 
 module.exports = merge(webpackBaseConfig('production'), {
 	optimization: {
@@ -69,8 +56,7 @@ module.exports = merge(webpackBaseConfig('production'), {
 		}),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify('production'),
-			'process.env.DEBUG': JSON.stringify(process.env.DEBUG) || JSON.stringify('debug'),
-			'API_SERVER': API_SERVER
+			'process.env.DEBUG': JSON.stringify(process.env.DEBUG) || JSON.stringify('debug')
 		}),
 		new webpack.optimize.LimitChunkCountPlugin({
 			maxChunks: 5, // Must be greater than or equal to one
