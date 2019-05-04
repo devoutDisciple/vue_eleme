@@ -50,17 +50,23 @@
             var len = 30; //图片个数
             var num1 = Math.random() * 10
             var num2 = Math.random() * 10
-
-            for (var i = 0; i < len; i++) {
+            for (var i = 0; i < len; ++i) {
                 arr.push(Math.random() * len);
-                $(".imgItem:eq("+i+")").css('marginLeft', arr[i] + 'px');
-				$(".imgItem:eq("+i+")").css('marginTop', arr[i] + 'px');
+         
 				// let img = document.createElement("img");
 				// img.src = `img/src/assets/girl${i}.jpg`;
 				// $('.wrapper').append(img)
                 $('.wrapper').append(`<span class="imgItem">
-                	<img src="./img/girl${i}.jpg" />
+                	<img src="/img/src/assets/girl${i}.jpg" />
             	</span>`)
+                 $(".imgItem:eq("+i+")").width(100+'px');
+                $(".imgItem").css('display','block');
+                 
+                  $(".imgItem:eq("+i+")").css('overflow','hidden');
+                  $('.imgItem img').css('width','100%');
+                $(".imgItem:eq("+i+")").css('marginLeft', arr[i] + 'px');
+				$(".imgItem:eq("+i+")").css('marginTop', arr[i] + 'px');
+                $('.imgItem').last().hide()
             }
 		},
 	}
@@ -99,6 +105,7 @@
     width: 100px;
     margin-left: 25px;
     margin-top: 10px;
+    overflow:hidden;
 }
 .imgItem:hover{
     cursor: pointer;
@@ -160,7 +167,7 @@
  .imgItem.class17{
     margin: 22px;
  }
-.imgItem>img{
+.imgItem img{
     width: 100%;
 }
 .rightBar{
